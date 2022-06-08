@@ -1,0 +1,18 @@
+first := "hello" + " " + "world"
+print first
+
+second := "foo" + "bar" = "foobar"
+print second
+
+third := "10 corgis" != "10" + "corgis"
+print third
+
+math := 9 + 10
+math := math + 2
+print math
+
+math := math * 2
+print math
+
+del math
+print math

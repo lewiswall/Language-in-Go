@@ -1,0 +1,45 @@
+You can run the program from the main.go file
+
+The main function on line 20 is where the text file address will need to be entered
+
+the test code is included in the testfiles folder. To run one of the files enter it into the main.go file on line 20
+
+----------------------------------------------------------
+SYNTAX
+
+Types
+int - used when a number without a decimal is given
+decimal - uses float64 and is used when a decimal is given. if int is put in an operation with a
+          decimal it will return a decimal
+string
+bool
+
+
+Binary operators
+ADD: +     MINUS: -   TIMES: *    DIVIDE: /    POWER: ^    UNARY MINUS: -    BRACKETS: ()
+
+
+Boolean operators
+>   <   <=  >=   !=   !        EQUAL TO: =    OR: |    AND: &
+
+
+Boolean types:
+false       true
+
+
+Variables
+Assignment:  :=      -  varName :=  value
+Delete:  del         - del varName
+
+
+Functions
+print
+input - needs string after to display to user
+
+
+Control
+if - needs expression which will equal a bool value after then curly braces containing code to execute if the
+     statement is correct
+
+while - needs expression which will equal a bool value after then curly braces containing code to execute if the
+        statement is correct

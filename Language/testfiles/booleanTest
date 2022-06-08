@@ -1,0 +1,25 @@
+one := (0.1 + 0.2) * 10
+answer := one = 3
+print one
+print answer
+
+two := true != false
+print two
+
+three := (5 < 10)
+print three
+
+four := !(5 - 4 > 3 * 2) = !false
+print four
+
+five := true & true
+print five
+
+six := false & true
+print six
+
+seven := (0 < 1) | false
+print seven
+
+eight := false | false
+print eight

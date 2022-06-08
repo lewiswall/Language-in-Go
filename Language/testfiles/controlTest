@@ -1,0 +1,21 @@
+isRunning := true
+
+shoppingList := ""
+
+
+while isRunning = true {
+    item := input("add an item to the shopping list: ")
+
+    if (item = "") {
+        isRunning := false
+    }
+    if shoppingList != ""{
+         shoppingList := shoppingList + ", " + item
+    }
+
+    if shoppingList = ""{
+        shoppingList := item
+    }
+}
+print "shopping list : " + shoppingList
+

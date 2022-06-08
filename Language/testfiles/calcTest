@@ -1,0 +1,18 @@
+one := 1 - 2
+print one
+
+two := 2.5 + 2.5 - 1.25
+print two
+
+three := (10.0 * 2) / 6
+print three
+
+four := 8.5 / (2 * 9) - -3
+print four
+
+five :=  3 + 4 * 2 / ( 1 - 5 ) ^ 2 ^ 3.0
+print five
+
+six := 7 + 3 * (10 / (12 / (3 + 1) - 1)) + 2
+print six
+
