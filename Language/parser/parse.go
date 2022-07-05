@@ -1,8 +1,8 @@
 package parser
 
 import (
+	tree "language/syntax_tree"
 	"language/tokenizer"
-	"language/tree"
 )
 
 type TreeBuilder struct {
@@ -19,6 +19,9 @@ func NewParser(tokens []tokenizer.Token) TreeBuilder {
 }
 
 func (t *TreeBuilder) EvaluateToken() {
+	if t.index >= len(t.tokens) {
+		return
+	}
 	switch true {
 	case isLiteral(t.tokens[t.index]):
 		t.handleLiteral()
@@ -39,68 +42,17 @@ func (t *TreeBuilder) EvaluateToken() {
 		t.handleFunc()
 
 	case isControl(t.tokens[t.index]):
-		t.handleControl()
+		t.handleControlStatement()
 
 	case isEndOfLine(t.tokens[t.index]):
-		node := popFromStack(&t.Stack)
-		t.ParsedLines = append(t.ParsedLines, node)
+		if len(t.Stack) > 0 {
+			node := popFromStack(&t.Stack)
+			t.ParsedLines = append(t.ParsedLines, node)
+		}
 		t.index += 1
 		t.EvaluateToken()
 	}
 
-}
-
-func (t *TreeBuilder) handleControl() {
-	t.controlFlow = true
-	contType := t.tokens[t.index]
-	t.index += 1
-
-	expressionStart := t.index
-	for t.tokens[t.index].Kind != tokenizer.BlockStart {
-		t.index += 1
-	}
-	expressionEnd := t.index
-
-	var expression = make([]tokenizer.Token, expressionEnd-expressionStart)
-	copy(expression, t.tokens[expressionStart:expressionEnd])
-	end := tokenizer.CreateToken("END", tokenizer.End, 0, 0)
-	expression = append(expression, end)
-	leftTree := NewParser(expression)
-	leftTree.EvaluateToken()
-	l := leftTree.Stack[0]
-
-	blockStart := t.index + 2
-	t.index += 1
-	nestedBlock := 0
-	for t.tokens[t.index].Kind != tokenizer.BlockEnd || nestedBlock > 0 {
-		if t.tokens[t.index].Kind == tokenizer.BlockStart {
-			nestedBlock += 1
-		}
-		if t.tokens[t.index].Kind == tokenizer.BlockEnd {
-			nestedBlock -= 1
-		}
-		t.index += 1
-	}
-	blockEnd := t.index
-
-	var block = make([]tokenizer.Token, blockEnd-blockStart)
-	copy(block, t.tokens[blockStart:blockEnd])
-
-	block = append(block, tokenizer.CreateToken("END", tokenizer.End, 0, 0))
-	rightTree := NewParser(block)
-	rightTree.EvaluateToken()
-	r := rightTree.ParsedLines
-
-	switch contType.Kind {
-	case tokenizer.If:
-		t.Stack = append(t.Stack, tree.IfNode{contType, l, r})
-
-	case tokenizer.While:
-		t.Stack = append(t.Stack, tree.WhileNode{contType, l, r})
-	}
-
-	t.index += 1
-	t.EvaluateToken()
 }
 
 func isControl(token tokenizer.Token) bool {
