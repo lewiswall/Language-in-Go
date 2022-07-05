@@ -2,7 +2,7 @@ package interpreter
 
 import (
 	"fmt"
-	"language/tree"
+	tree "language/syntax_tree"
 )
 
 func Interpret(treee []tree.Node) {
