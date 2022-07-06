@@ -128,34 +128,36 @@ func isIdentifier(token tokenizer.Token) bool {
 }
 
 func (t *TreeBuilder) handleBoolOp() {
-	right := popFromStack(&t.Stack)
-	left := popFromStack(&t.Stack)
+	//right := popFromStack(&t.Stack)
+	//left := popFromStack(&t.Stack)
 	token := t.tokens[t.index]
+
+	children := t.createChildrenStructure()
 
 	switch t.tokens[t.index].Text {
 	case "<":
-		t.Stack = append(t.Stack, tree.SmallThanNode{token, left, right})
+		t.Stack = append(t.Stack, tree.SmallThanNode{token, children})
 
 	case "<=":
-		t.Stack = append(t.Stack, tree.SmallThanEqualNode{token, left, right})
+		t.Stack = append(t.Stack, tree.SmallThanEqualNode{token, children})
 
 	case ">":
-		t.Stack = append(t.Stack, tree.BigThanNode{token, left, right})
+		t.Stack = append(t.Stack, tree.BigThanNode{token, children})
 
 	case ">=":
-		t.Stack = append(t.Stack, tree.BigThanEqualNode{token, left, right})
+		t.Stack = append(t.Stack, tree.BigThanEqualNode{token, children})
 
 	case "!=":
-		t.Stack = append(t.Stack, tree.NotEqualNode{token, left, right})
+		t.Stack = append(t.Stack, tree.NotEqualNode{token, children})
 
 	case "=":
-		t.Stack = append(t.Stack, tree.DoesEqualNode{token, left, right})
+		t.Stack = append(t.Stack, tree.DoesEqualNode{token, children})
 
 	case "&":
-		t.Stack = append(t.Stack, tree.AndNode{token, left, right})
+		t.Stack = append(t.Stack, tree.AndNode{token, children})
 
 	case "|":
-		t.Stack = append(t.Stack, tree.OrNode{token, left, right})
+		t.Stack = append(t.Stack, tree.OrNode{token, children})
 	}
 	t.index += 1
 	t.EvaluateToken()
@@ -197,26 +199,14 @@ func (t *TreeBuilder) handleBinOp() {
 		t.Stack = append(t.Stack, tree.AddNode{token, children})
 
 	case tokenizer.Divide:
-		// children := t.createChildrenStructure()
-		//left := popFromStack(&t.Stack)
-		//right := popFromStack(&t.Stack)
-		//t.Stack = append(t.Stack, tree.DivideNode{token, left, right})
 		children := t.createChildrenStructure()
 		t.Stack = append(t.Stack, tree.DivideNode{token, children})
 
 	case tokenizer.Subtract:
-		// children := t.createChildrenStructure()
-		//left := popFromStack(&t.Stack)
-		//right := popFromStack(&t.Stack)
-		//t.Stack = append(t.Stack, tree.SubtractNode{token, left, right})
 		children := t.createChildrenStructure()
 		t.Stack = append(t.Stack, tree.SubtractNode{token, children})
 
 	case tokenizer.Exspo:
-		// children := t.createChildrenStructure()
-		//left := popFromStack(&t.Stack)
-		//right := popFromStack(&t.Stack)
-		//t.Stack = append(t.Stack, tree.ExpoNode{token, left, right})
 		children := t.createChildrenStructure()
 		t.Stack = append(t.Stack, tree.ExpoNode{token, children})
 

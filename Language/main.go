@@ -17,7 +17,7 @@ import (
 func main() {
 	var tokens []tokenizer.Token
 
-	f, err := os.Open("testfiles/calcTest")
+	f, err := os.Open("testfiles/booleanTest")
 	if err != nil {
 		log.Fatal(err)
 	}
