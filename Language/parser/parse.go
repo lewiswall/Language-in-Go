@@ -171,35 +171,54 @@ func isBoolOp(token tokenizer.Token) bool {
 	}
 }
 
+func (t *TreeBuilder) createChildrenStructure() tree.ChildrenNodes {
+	right := popFromStack(&t.Stack)
+	left := popFromStack(&t.Stack)
+
+	return tree.ChildrenNodes{
+		LeftChild:  left,
+		RightChild: right,
+		LeftVal:    tree.Value{},
+		RightVal:   tree.Value{},
+	}
+}
+
 func (t *TreeBuilder) handleBinOp() {
 
 	token := t.tokens[t.index]
 
 	switch t.tokens[t.index].Kind {
 	case tokenizer.Multiply:
-		right := popFromStack(&t.Stack)
-		left := popFromStack(&t.Stack)
-		t.Stack = append(t.Stack, tree.MultiplyNode{Token: token, Right: right, Left: left})
+		children := t.createChildrenStructure()
+		t.Stack = append(t.Stack, tree.MultiplyNode{token, children})
 
 	case tokenizer.Add:
-		right := popFromStack(&t.Stack)
-		left := popFromStack(&t.Stack)
-		t.Stack = append(t.Stack, tree.AddNode{Token: token, Right: right, Left: left})
+		children := t.createChildrenStructure()
+		t.Stack = append(t.Stack, tree.AddNode{token, children})
 
 	case tokenizer.Divide:
-		right := popFromStack(&t.Stack)
-		left := popFromStack(&t.Stack)
-		t.Stack = append(t.Stack, tree.DivideNode{Token: token, Right: right, Left: left})
+		// children := t.createChildrenStructure()
+		//left := popFromStack(&t.Stack)
+		//right := popFromStack(&t.Stack)
+		//t.Stack = append(t.Stack, tree.DivideNode{token, left, right})
+		children := t.createChildrenStructure()
+		t.Stack = append(t.Stack, tree.DivideNode{token, children})
 
 	case tokenizer.Subtract:
-		right := popFromStack(&t.Stack)
-		left := popFromStack(&t.Stack)
-		t.Stack = append(t.Stack, tree.SubtractNode{Token: token, Right: right, Left: left})
+		// children := t.createChildrenStructure()
+		//left := popFromStack(&t.Stack)
+		//right := popFromStack(&t.Stack)
+		//t.Stack = append(t.Stack, tree.SubtractNode{token, left, right})
+		children := t.createChildrenStructure()
+		t.Stack = append(t.Stack, tree.SubtractNode{token, children})
 
 	case tokenizer.Exspo:
-		right := popFromStack(&t.Stack)
-		left := popFromStack(&t.Stack)
-		t.Stack = append(t.Stack, tree.ExpoNode{Token: token, Right: right, Left: left})
+		// children := t.createChildrenStructure()
+		//left := popFromStack(&t.Stack)
+		//right := popFromStack(&t.Stack)
+		//t.Stack = append(t.Stack, tree.ExpoNode{token, left, right})
+		children := t.createChildrenStructure()
+		t.Stack = append(t.Stack, tree.ExpoNode{token, children})
 
 	case tokenizer.Unary:
 		right := popFromStack(&t.Stack)
@@ -210,13 +229,6 @@ func (t *TreeBuilder) handleBinOp() {
 }
 
 func (t *TreeBuilder) handleLiteral() {
-	//if t.tokens[t.index].Kind == tokenizer.Int {
-	//	intNode := tree.IntNode{t.tokens[t.index]}
-	//	t.Stack = append(t.Stack, intNode)
-	//} else if t.tokens[t.index].Kind == tokenizer.Float {
-	//	floatNode := tree.FloatNode{t.tokens[t.index]}
-	//	t.Stack = append(t.Stack, floatNode)
-	//}
 
 	switch t.tokens[t.index].Kind {
 	case tokenizer.Int:

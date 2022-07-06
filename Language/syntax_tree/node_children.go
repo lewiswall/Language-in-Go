@@ -1,47 +1,47 @@
 package tree
 
-type childrenNodes struct {
-	leftChild  Node
-	rightChild Node
-	leftVal    Value
-	rightVal   Value
+type ChildrenNodes struct {
+	LeftChild  Node
+	RightChild Node
+	LeftVal    Value
+	RightVal   Value
 }
 
-func (children childrenNodes) RetrieveChildrensNodeValues() error {
+func (children *ChildrenNodes) RetrieveChildrensNodeValues() error {
 	var err error
-	if children.leftVal, err = children.leftChild.Evaluate(); err != nil {
+	children.LeftVal, err = children.LeftChild.Evaluate()
+	if err != nil {
 		return err
 	}
-	if children.rightVal, err = children.rightChild.Evaluate(); err != nil {
+	if children.RightVal, err = children.RightChild.Evaluate(); err != nil {
 		return err
 	}
 
 	if children.oneOrBothOfChildrenAreIdentifiers() {
-		children.retrieveValuesFromIdentifiers()
+		if err = children.retrieveValuesFromIdentifiers(); err != nil {
+			return err
+		}
 	}
-
 	return nil
 }
 
-func (children childrenNodes) oneOrBothOfChildrenAreIdentifiers() bool {
-	if children.leftVal.ValueType == Identifier ||
-		children.rightVal.ValueType == Identifier {
+func (children ChildrenNodes) oneOrBothOfChildrenAreIdentifiers() bool {
+	if children.LeftVal.ValueType == Identifier ||
+		children.RightVal.ValueType == Identifier {
 		return true
 	}
 	return false
 }
 
-func (children childrenNodes) retrieveValuesFromIdentifiers() error {
+func (children *ChildrenNodes) retrieveValuesFromIdentifiers() error {
 	var err error
-	if children.leftVal.ValueType == Identifier {
-		children.leftVal, err = fetchVar(children.leftVal.Value)
-		if err != nil {
+	if children.LeftVal.ValueType == Identifier {
+		if children.LeftVal, err = fetchVar(children.LeftVal.Value); err != nil {
 			return err
 		}
 	}
-	if children.rightVal.ValueType == Identifier {
-		children.rightVal, err = fetchVar(children.rightVal.Value)
-		if err != nil {
+	if children.RightVal.ValueType == Identifier {
+		if children.RightVal, err = fetchVar(children.RightVal.Value); err != nil {
 			return err
 		}
 	}
